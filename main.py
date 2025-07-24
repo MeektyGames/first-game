@@ -11,13 +11,13 @@ dt = 0
 
 #player variables
 player_pos = pygame.Vector2(screen.get_width() /2, screen.get_height() /2)
-radius = 60
+radius = 40
 
 #player functions
 def draw_player():
     player_image = pygame.image.load('assets\images\chracters\player.png').convert_alpha()
     player_rect = player_image.get_rect()
-    player_circle = pygame.draw.circle(screen, "blue", player_pos, radius)
+    player_circle = pygame.draw.circle(screen, "pink", player_pos, radius)
     screen.blit(player_image, player_circle, player_rect)
 
 def player_input():
@@ -40,6 +40,14 @@ def player_input():
     if keys[d] or keys[right]:
         player_pos.x += speed * dt
 
+def screen_wrap_x():
+    if player_pos.x - radius >= screen_width:
+        print("next room")
+        player_pos.x *= -.1
+    elif player_pos.x - radius <= 0:
+        print("next room")
+        player_pos.x /= -.3
+
 running = True
 while running:
     for event in pygame.event.get():
@@ -52,9 +60,7 @@ while running:
 
     player_input()
 
-    if player_pos.x - radius >= screen_width:
-        print("right of screen")
-        player_pos.x *= -0.01
+    screen_wrap_x()
     
     pygame.display.flip()
 
